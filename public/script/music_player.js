@@ -395,27 +395,19 @@ wky_define("wky.plugins", function(plugin){
         this.currentPlay = "";
         this.currentPlayIdx = 0;
         this.currentMusic = null;
-        
-        this.musicEndedCall = option.musicEndedCall ||
-        function(){
-        };
-        this.playMusicCall = option.playMusicCall ||
-        function(){
-        };
-        this.stopMusicCall = option.skipCall ||
-        function(){
-        };
-        this.loadMusicCall = option.loadMusicCall ||
-        function(){
-        };
-        this.skipCall = option.skipCall ||
-        function(){
-        };
-        
+		this.isNewList = false;
+		
+        this.musicEndedCall = option.musicEndedCall || function(){};
+        this.playMusicCall = option.playMusicCall || function(){};
+        this.stopMusicCall = option.skipCall || function(){};
+        this.loadMusicCall = option.loadMusicCall || function(){};
+        this.skipCall = option.skipCall ||function(){};
         this.usePlayer = option.player;
+		this.formName = option.formName || "";//当前列表的歌单名
+		this.currFormName = "";//正在播放的歌单
+
         this.init(option.playList);
     }
-    
     PlayerList.prototype = {
         constructor: PlayerList,
         init: function(list){
@@ -426,9 +418,9 @@ wky_define("wky.plugins", function(plugin){
             this.usePlayer.playEndCallback = function(){
                 self.musicEnded();
             }
-            self.resetPlayList(list);
+            self.resetPlayList(list,this.formName);
         },
-		resetPlayList:function(list){
+		resetPlayList:function(list,formName){
 			var self = this;
 			self.playList = [];
 			if (core.isArray(list)) {
@@ -445,9 +437,8 @@ wky_define("wky.plugins", function(plugin){
                 }
                 self.playList(list);
             }
-			self.currentPlay = "";
-			self.currentPlayIdx = 0;
-			self.currentMusic = null;
+			self.formName = formName;
+			self.isNewList = true;
 		},
         musicEnded: function(callback){
             this.musicEndedCall.call(this);
@@ -465,6 +456,9 @@ wky_define("wky.plugins", function(plugin){
         next: function(){
             var curr = this.getNextPlayIdx();
             this.currentPlayIdx = curr;
+			if(this.isNewList && this.currFormName != this.formName){
+				this.currentPlayIdx = 0;
+			}
             if (this.loadMusic("next")) {
                 this.playMusic();
             }
@@ -473,6 +467,9 @@ wky_define("wky.plugins", function(plugin){
         prev: function(){
             var curr = this.getPrevPlayIdx();
             this.currentPlayIdx = curr;
+			if(this.isNewList && this.currFormName != this.formName){
+				this.currentPlayIdx = 0;
+			}
             if (this.loadMusic("prev")) {
                 this.playMusic();
             }
@@ -556,9 +553,11 @@ wky_define("wky.plugins", function(plugin){
             if (!this.currentMusic) {
                 this.loadMusic("play");
             }
+			this.isNewList = false;
             this.usePlayer.play();
             this.playMusicCall.call(this)
-            return this;
+			this.currFormName = this.formName;//设置当前播放歌曲的表单
+			return this;
         },
         pauseMusic: function(){
             this.usePlayer.pause();
@@ -932,13 +931,14 @@ wky_define("wky.plugins", function(plugin){
 			});
 		},
 		setMusicForm:function(){
+			var that = this;
+			var ul = "<ul>";
+			var songForms = "";
+			var initFormName = "";
 			if(!this.formListEle){
 				//console.log 这里可以跑一个异常了
 				return;
 			}
-			var that = this;
-			var ul = "<ul>";
-			var songForms = "";
 			core.each(that.songList,function(i,v){
 				if(!v || !v.name){
 					return;
@@ -948,7 +948,6 @@ wky_define("wky.plugins", function(plugin){
 			});
 			ul += "</ul>";
 			dom.html(that.formListEle, ul);
-			
 			that.addFormEle = document.createElement("div");
 			dom.addClass(that.addFormEle,"plus");
 			//添加plus 按钮
@@ -960,7 +959,8 @@ wky_define("wky.plugins", function(plugin){
 				easing: "easeInOutCubic"
 			});
 			//dom.html(that.songListEle,songForms)
-			this.updateFormSongList(that.songList[0].name);
+			initFormName = that.songList[0] ? that.songList[0].name : "";
+			this.updateFormSongList(initFormName);
 		},
 		showAddFormBtn:function(){
 			dom.setStyle(that.addFormEle,{
@@ -975,7 +975,7 @@ wky_define("wky.plugins", function(plugin){
 		updateFormSongList:function(key){
 			var that = this;
 			var songForm = this.findForm(key);
-			if(!songForm){
+			if(!songForm || !key){
 				//没有发现歌单名字
 				return;
 			}
@@ -1018,7 +1018,7 @@ wky_define("wky.plugins", function(plugin){
 			that.songSlider.skipTo(parseInt(idx));
 			var songList = that.findForm(formName);
 			songList = songList ? songList.songList : [];
-			that.swapFormCall(songList);
+			that.swapFormCall(songList,formName);
 			return;
 		},
 		findForm:function(key){
@@ -1575,7 +1575,6 @@ wky_define("wky.plugins", function(plugin){
             this.createPlayList();
             //创建 歌词
             this.createLrc();
-            
             //创建图片切换
             this.setImageSwap();
             //初始化 界面信息设置
@@ -1587,7 +1586,7 @@ wky_define("wky.plugins", function(plugin){
                 core.each(this.playerListOption.playList, function(i, v){
 					if(v && v.songList && core.isArray(v.songList)){
 						core.each(v.songList,function(j,v1){
-							if (v1 && v1.mp3) {
+							if (v1 && v1.mp3 && !v1.songId) {
 								v1.songId = getMusicId();
 							}
 						});
@@ -1696,6 +1695,7 @@ wky_define("wky.plugins", function(plugin){
                 dom.addClass(pyBtn, "play");
             }
 			playListArg.playList = this.songList.currentFormSongList;//播放列表
+			playListArg.formName = this.songList.currentSongFormName;//当前歌单
 			playListArg.player = this.playerListOption.player;
 			playListArg.musicEndedCall = this.playerListOption.musicEndedCall;
 			playListArg.loadMusicCall = this.playerListOption.loadMusicCall;
@@ -1707,6 +1707,7 @@ wky_define("wky.plugins", function(plugin){
             dom.setStyle(py, {
                 display: "block"
             });
+			
         },
         setImageSwap: function(){
             var con = null;
@@ -1788,9 +1789,9 @@ wky_define("wky.plugins", function(plugin){
                     that.loadLRC(info);
                     that.playerList.updatePlaying(songId);
                 },
-				swapFormCall:function(list){
+				swapFormCall:function(list,formName){
 					if(that.playerList){
-						that.playerList.resetPlayList(list);
+						that.playerList.resetPlayList(list,formName);
 					}
 				}
             });

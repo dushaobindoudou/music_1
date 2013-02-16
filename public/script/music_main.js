@@ -11,6 +11,7 @@ wky_define("wky.pageMainMusic", function(plugin){
     var ImageLoad = wky.plugins.ImageLoad;
     var ImageSwap = wky.plugins.ImageSwap;
     var sortRect = wky.plugins.sortRect;
+	var slider = wky.plugins.slider;
     
     if (!dom) {
         throw new Error("dom 加载失败");
@@ -36,7 +37,20 @@ wky_define("wky.pageMainMusic", function(plugin){
     var pageConfig = {
         musicListWidth: 30,
         pageNavWidth: 40,
-        musicPlayerHeight: 100
+        musicPlayerHeight: 100,
+		nav:[{
+			name:"搜索",
+			api:""
+		},{
+			name:"购买",
+			api:""
+		},{
+			name:"收藏",
+			api:""
+		},{
+			name:"明星墙",
+			api:""
+		}]
     };
 	
 	//用户是否登录
@@ -63,19 +77,50 @@ wky_define("wky.pageMainMusic", function(plugin){
         var contentHeight = ws.height - pageConfig.musicPlayerHeight;
 		var userInfo = getUserInfo();
         var label = '<div class="music-main" style="margin-left:0;height:' + contentHeight + 'px; width:' + ws.width + 'px;"><div class="music-title"><ul><li></li><li>关于</li><li></li><li class="user-info">'+userInfo+'</li></ul></div>' +
-        '<div class="music-content" style="margin-left:' +
-        pageConfig.musicListWidth +
-        'px;width:' +
-        contentWidth +
-        'px; height:' +
-        (contentHeight - pageConfig.pageNavWidth) +
-        'px;"><div class="music-detail"></div><div class="music-category"></div></div></div>';
+        '<div class="music-content" style="margin-left:' + pageConfig.musicListWidth + 'px;width:' + contentWidth + 'px; height:' + (contentHeight - pageConfig.pageNavWidth) + 'px;"></div></div>';
+		
         dom.prepend(document.body, label);
         return {
             contentWidth: contentWidth,
             contentHeight: contentHeight
         }
     }
+	//创建主音乐内容
+	var createMainMusic = function(contentSize){
+		var musicMain = dom.search("div.music-main")[0];
+        var corverContainer = dom.search("div.music-content", musicMain)[0];
+		
+		var navSlider = null;
+		var width = dom.width(corverContainer);
+        var height = dom.height(corverContainer);
+        var parsedWidth = parseInt(width / 100);
+        var parsedHeight = parseInt(height / 100);
+        
+        var leaveWidth = (width / 100 - parsedWidth) * 100;
+        var leaveHeight = (height / 100 - parsedHeight) * 100;
+        
+        //todo:应该copy过来
+        contentSize = contentSize || {};
+        contentSize.leaveWidth = leaveWidth;
+        contentSize.leaveHeight = leaveHeight;
+        //设置内容
+        if (contentSize.leaveWidth < 80) {
+            contentSize.leaveWidth = contentSize.leaveWidth + 100;
+            parsedWidth = parsedWidth - 1;
+        }
+		
+		var ht = '<div class="content-container" style= "width:'+(contentSize.contentWidth - contentSize.leaveWidth)+'px; ;height:'+(contentSize.contentHeight - pageConfig.pageNavWidth)+'px; float:left;"></div><div class="right-nav" style="width:' + contentSize.leaveWidth + 'px;height:' + (contentSize.contentHeight - pageConfig.pageNavWidth) + 'px;"><div class="content-scroll-bar"></div><div class="content-nav" style="width:' + (contentSize.leaveWidth - 20) + 'px; height:' + (contentSize.contentHeight - pageConfig.pageNavWidth) + 'px;"></div></div>';
+		
+		dom.html(corverContainer,ht);
+		
+		var sliders = 
+		
+		navSlider
+		
+		
+		return;
+	}
+	
     
     //图片转换
     var songerSwap = function(options){
@@ -103,12 +148,12 @@ wky_define("wky.pageMainMusic", function(plugin){
         }
         var ht = '<div class="right-nav" style="width:' + contentSize.leaveWidth + 'px;height:' + (contentSize.contentHeight - pageConfig.pageNavWidth) + 'px;"><div class="content-scroll-bar"></div><div class="content-nav" style="width:' + (contentSize.leaveWidth - 20) + 'px; height:' + (contentSize.contentHeight - pageConfig.pageNavWidth) + 'px;"><ul><li>搜索</li><li>购买</li><li>收藏</li></ul></div></div>';
         //创建滚动条
-        
+		
         //创建导航
-        
-        dom.append(container, ht);
-        
-    }
+        var sd = slider({
+			
+		});
+	}
     
     
     
@@ -370,8 +415,6 @@ wky_define("wky.pageMainMusic", function(plugin){
             }
         });
         
-        
-        
         dom.html(corverContainer, '<div style="position:relative; float:left; height:' + parsedHeight * 100 + 'px; width:' + parsedWidth * 100 + 'px; ">' + ht + '</div>');
         var songerImages = dom.search("div.songer-image", corverContainer);
         core.each(songerImages, function(i, k){
@@ -384,10 +427,9 @@ wky_define("wky.pageMainMusic", function(plugin){
         
         //创建右侧导航
         genRightNav(corverContainer, contentSize);
-        
+		
         var MusicPopup = wky.plugins.MusicPopup;
         var wsg = dom.screenSize();
-        
         var popup = new MusicPopup({
             width: wsg.width,
             height: wsg.height,
@@ -403,23 +445,21 @@ wky_define("wky.pageMainMusic", function(plugin){
 			if(!ele){
 				return;
 			}
-			
 			var url = dom.getAttr(ele,"data-ad-url");
 			if(!url){
 				return;
 			}
-			
-            window.open(url, 'newwindow'); 
-			
+            //window.open(url, 'newwindow'); 
 			return false; 
-        })
+        });
     }
     
     
     var initPage = function(){
         var size = createPage();
-        setSortEle(size);
-        
+		var mainMusic = createMainMusic(size);
+		
+        //setSortEle(size);
     }
     
     wky.domReady(function(){

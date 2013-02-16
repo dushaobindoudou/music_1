@@ -44,6 +44,7 @@ app.post(/^\/api\/login_api/,require("./api/login").loginApi);
 app.get(/^\/api\/is_user_name_signup/,require("./api/is_user_name_singup").isUserNameSingup);
 app.get(/^\/api\/is_email_signup/,require("./api/is_email_singup").isEmailSingup);
 app.get(/^\/api\/add_song_form/,require("./api/add_song_form").addSongForm);
+app.get(/^\/api\/add_song_to_form/,require("./api/add_song_to_form").addSongToForm);
 app.get(/^\/api\/save_all_data/,require("./api/save_all_data").saveAllData);
 app.get(/^\/api\/test/,require("./api/test").test);
 

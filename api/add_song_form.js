@@ -29,6 +29,17 @@ var isExistFormName = function(formList,formName){
 	})
 	return isExist;
 }
+//是否超过了添加最大限制
+var isInLimit = function(formList){
+	if(!core.isArray(formList)){
+		return;
+	}else{
+		if(formList.length < 5){
+			return true
+		}
+	}
+	return;
+}
 
 //处理用户请求
 var processReq = function(session,formName){
@@ -58,6 +69,10 @@ var processReq = function(session,formName){
 		resData.status = 1;
 		resData.msg = "添加成功!";
 	}else{
+		if(!isInLimit(userInfo.songFormList)){
+			resData.msg = "歌单超过了最大限制!";
+			return resData;
+		}
 		if(!isExistFormName(userInfo.songFormList,formName)){
 			userInfo.songFormList.push({
 				name:formName,
