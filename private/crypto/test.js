@@ -1,0 +1,1 @@
+﻿/*   测试 加密算法    */var cryptoRsa = require('./crypto_rsa');var message = "dustin from beijing china!!!";var cedRsa = cryptoRsa.rsaEncrypt(message);console.log(cedRsa);var orgMsg = cryptoRsa.rsaDecrypt(cedRsa);console.log(orgMsg);console.log(cryptoRsa);

@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html dir="ltr">
+    <head>
+        <meta charset="utf-8">
+	<meta name="keywords" content="中国最牛逼的音乐网站">
+	<meta name="description" content="中国最牛逼的音乐网站">
+        <title>音乐播放 </title>
+        <link rel="stylesheet" type="text/css" href="css/reset.css">
+        </link>
+        <style type="text/css">
+            /* beautiful yellow #E1FF03 */
+            html, body {
+                font-family: 'Lucida Grande', tahoma, arial, 宋体;
+            }
+            
+            /* 大于1200 */
+            .music-main {
+                /*margin-left: 30px;*/
+            }
+            
+            .music-content {
+                position: relative;
+                overflow: hidden;
+                color: #E0E0E0;
+            }
+            
+            .music-content .content-scroll-bar {
+                width: 20px;
+                float: left;
+                background: #D1D1D1;
+                height: 100%;
+            }
+            
+            .music-content .right-nav {
+                float: left;
+                position: relative;
+                background: #2565C7;
+            }
+            
+            .right-nav .content-nav {
+                float: left;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .right-nav .content-nav ul li {
+                text-align: center;
+                line-height: 40px;
+                font-size: 24px;
+                width: 100%;
+                height: 40px;
+                color: #FFFFFF;
+                cursor: pointer;
+            }
+            
+            .right-nav .content-nav ul li:hover {
+            	background:#054985;
+            }
+            
+            .music-content .songer-image {
+                position: absolute;
+                overflow: hidden;
+            }
+			
+			.music-content .songer-image-hover{
+				z-index:5;
+				border:1px solid #000000;
+				margin-top:-1px;
+				margin-left:-1px;
+			}
+			
+			.music-content .songer-image:hover{
+				z-index:5;
+				border:1px solid #000000;
+				margin-top:-1px;
+				margin-left:-1px;
+			}
+            
+            .music-title {
+                background: none repeat scroll 0 0 #21487F;
+                color: #E0E0E0;
+                height: 40px;
+            }
+            
+            .music-title ul li {
+                margin-left: 5px;
+                float: left;
+                height: 40px;
+                text-align: center;
+                line-height: 40px;
+            }
+            
+            .music-title .user-info {
+                width: 200px;
+                float: right;
+            }
+            
+            /* 窗口模式 歌词  */
+            .lrc-controls {
+                width: 360px;
+                height: 20px;
+                background: none repeat scroll 0 0 #04B2D9;
+                color: #E0E0E0;
+                font-size: 12px;
+                position: relative;
+                margin: 0 auto;
+            }
+            
+            .lrc-controls ul li {
+                width: 40px;
+                text-align: center;
+                line-height: 20px;
+                float: right;
+                cursor: pointer;
+            }
+            
+            .lrc-controls .close-lrc {
+                float: left;
+            }
+            
+            .music-player-lrc {
+                width: 100%;
+                height: 460px;
+                background: #0476D9;
+                color: #E0E0E0;
+                position: relative;
+                overflow: hidden;
+                font-size: 14px;
+            }
+            
+            .music-player-lrc ul {
+                position: absolute;
+                width: 100%;
+            }
+            
+            .music-player-lrc ul li {
+                overflow: hidden;
+                text-align: center;
+                line-height: 30px;
+                height: 30px;
+            }
+            
+            .music-player-lrc ul li.current {
+                color: #00305A;
+            }
+            
+            .music-player-lrc ul li span {
+                line-height: 15px;
+                height: 15px;
+            }
+            
+            /* 桌面模式 歌词  */
+            .lrc-controls-d {
+                height: 20px;
+                background: none repeat scroll 0 0 #04B2D9;
+                color: #E0E0E0;
+                font-size: 12px;
+                position: relative;
+            }
+            
+            .music-player-lrc-d {
+                height: 80px;
+                color: #E0E0E0;
+                position: relative;
+                overflow: hidden;
+                font-size: 54px;
+                background: none;
+            }
+            
+            .hover-controls {
+                border: 1px solid #E0E0E0;
+                top: -1px;
+                margin-left: -1px;
+            }
+            
+            .music-player-lrc-d ul {
+                position: absolute;
+                width: 100%;
+            }
+            
+            .music-player-lrc-d ul li {
+                overflow: hidden;
+                text-align: center;
+                line-height: 80px;
+                height: 80px;
+            }
+            
+            .music-player-lrc-d ul li.current {
+                color: #00305A;
+            }
+            
+            /* 播放器 */
+            .player-ui {
+                width: 574px;
+                height: 100px;
+            }
+            
+            .player-ui .player-on-off {
+                width: 50px;
+                height: 100px;
+                float: left;
+                filter: alpha(opacity = 60);
+                opacity: 0.6;
+                cursor: pointer;
+                zoom: 1;
+            }
+            
+            .player-ui .player-on-off .on-icon {
+                width: 50px;
+                height: 100px;
+                background: url("images/music/open4848.png") no-repeat scroll 0 27px transparent;
+            }
+            
+            .player-ui .palyer-waper {
+                float: left;
+            }
+            
+            .player-ui .player-corver {
+                position: relative;
+                float: left;
+                width: 100px;
+                height: 100px;
+                color: #ffffff;
+            }
+            
+            .player-ui .player-corver .corver-img-container {
+                position: relative;
+            }
+            
+            .flip-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                -webkit-perspective: 400px;
+                -moz-perspective: 400px;
+                -o-perspective: 400px;
+                -ms-perspective: 400px;
+                perspective: 400px;
+            }
+            
+            .flip-container .flip-card {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                -webkit-transform-style: preserve-3d;
+                -moz-transform-style: preserve-3d;
+                -ms-transform-style: preserve-3d;
+                -o-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+            
+            .flip-container .face {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background: #4192D9;
+                display: block;
+                -webkit-backface-visibility: hidden;
+                -moz-backface-visibility: hidden;
+                -ms-backface-visibility: hidden;
+                -o-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            
+            .flip-container .back {
+                -webkit-transform: rotateY(180deg);
+                -moz-transform: rotateY(180deg);
+                -ms-transform: rotateY(180deg);
+                -o-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+                box-sizing: border-box;
+            }
+            
+            .fade-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .fade-container .front-face {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background: #4192D9;
+            }
+            
+            .fade-container .back-face {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                zoom: 1;
+                opacity: 0;
+                filter: alpha(opacity = 0);
+            }
+            
+            .player-ui .player-corver .corver-img {
+                border: 1px solid #DDDDDD;
+                margin-top: -1px;
+                margin-left: -1px;
+                width: 100px;
+                height: 100px;
+            }
+            
+            .player-ui .player-corver .selected {
+                height: 25px;
+                line-height: 25px;
+                text-align: center;
+                display: block;
+            }
+            
+            .player-ui .play-mode {
+                font-size: 14px;
+                position: absolute;
+                left: 0;
+                background: #000000;
+                filter: alpha(opacity = 60);
+                opacity: 0.6;
+                height: 100px;
+                overflow: hidden;
+                width: 100px;
+                bottom: 0;
+                display: none;
+                zoom: 1;
+            }
+            
+            .player-ui .play-mode li {
+                float: left;
+                height: 25px;
+                width: 100px;
+                text-align: center;
+                line-height: 25px;
+                cursor: pointer;
+            }
+            
+            .player-ui .play-mode li:hover {
+                border: 1px solid #A6F075;
+                width: 98px;
+                height: 23px;
+                line-height: 23px;
+            }
+            
+            .player-ui .play-mode .current-mode {
+                color: #A6F075;
+            }
+            
+            .player-ui .play-mode .circle {
+            }
+            
+            .player-ui .play-mode .list {
+            }
+            
+            .player-ui .play-mode .random {
+            }
+            
+            .player-ui .player-controls {
+                position: relative;
+                float: left;
+                width: 424px;
+                height: 100px;
+            }
+            
+            .player-controls > div {
+                width: 100%;
+                height: 43px;
+                margin-top: 28.5px;
+            }
+            
+            .player-controls ul li {
+                float: left;
+                width: 43px;
+                height: 43px;
+                margin-left: 3px;
+            }
+            
+            .player-controls .play {
+                background: url("images/music/play_48_48.png") repeat scroll -11px -11px transparent;
+                cursor: pointer;
+            }
+            
+            .player-controls .pause {
+                background: url("images/music/pause_48_48.png") repeat scroll -11px -11px transparent;
+                cursor: pointer;
+            }
+            
+            .player-controls .previous {
+                background: url("images/music/previous_48_48.png") repeat scroll -11px -11px transparent;
+                cursor: pointer;
+            }
+            
+            .player-controls .next {
+                background: url("images/music/next_48_48.png") repeat scroll -11px -11px transparent;
+                cursor: pointer;
+            }
+            
+            .player-controls .bar {
+                width: 283px;
+                height: 43px;
+            }
+            
+            .player-controls .bar > div:first-child {
+                height: 5px;
+                width: 279px;
+                margin-top: 19px;
+                position: relative;
+                border: 1px solid #d1d1d1;
+            }
+            
+            .player-controls .bar > div:first-child > div {
+                position: absolute;
+            }
+            
+            .player-controls .bar .loaded {
+                background: #d1d1d1;
+                width: 0;
+                height: 5px;
+                cursor: pointer;
+            }
+            
+            .player-controls .bar .played {
+                background: #464646;
+                width: 0;
+                height: 5px;
+                cursor: pointer;
+            }
+            
+            .player-controls .bar .slider {
+                left: 0;
+                top: -2px;
+                background: #3986EE;
+                width: 5px;
+                height: 10px;
+                cursor: pointer;
+            }
+            
+            .player-controls .bar .other {
+                height: 16px;
+                width: 279px;
+                margin-top: 5px;
+                position: relative;
+                color: #3986EE;
+                font-size: 12px;
+            }
+            
+            .player-controls .bar .other .time {
+                float: left;
+                margin-top: 1px;
+                width: 100px;
+                overflow: hidden;
+            }
+            
+            .player-controls .bar .other .volume {
+                width: 120px;
+                float: right;
+                margin-right: 5px;
+                margin-top: -1px;
+            }
+            
+            .player-controls .bar .volume-icon {
+                float: left;
+                background: url(images/music/sound_16_16.png);
+                height: 16px;
+                width: 16px;
+                cursor: pointer;
+            }
+            
+            .player-controls .bar .volume-val {
+                position: relative;
+                float: left;
+                height: 16px;
+                width: 84px;
+            }
+            
+            .player-controls .bar .volume-val .vol-bar {
+                cursor: pointer;
+                position: absolute;
+                top: 6px;
+                width: 100px;
+                height: 5px;
+                background: #d1d1d1;
+                margin-left: 4px;
+            }
+            
+            .player-controls .bar .volume-val .vol-slide {
+                position: absolute;
+                top: 4px;
+                width: 5px;
+                height: 10px;
+                background: #3986EE;
+                left: 50px;
+                cursor: pointer;
+            }
+            
+            /* 歌曲列表  */
+            .song-detial-list {
+                width: 360px;
+                height: 100%;
+                background: none repeat scroll 0 0 #2565C7;
+                font-size: 16px;
+                color: #E0E0E0;
+                float: left;
+            }
+            
+            /* todo: 这个要写一个歌词缩写列表 */
+            .song-name-list {
+                float: left;
+                width: 30px;
+                height: 100%;
+                background: none repeat scroll 0 0 #4192D9;
+            }
+            
+            .song-name-list > div {
+                margin-top: 100px;
+                width: 30px;
+                height: 48px;
+                background: url("images/music/w_open4848.png") repeat scroll -10px 0 transparent;
+                cursor: pointer;
+            }
+            
+            .song-detial-list ul li {
+                height: 28px;
+                line-height: 28px;
+				overflow:hidden;
+            }
+            
+            .song-detial-list .song-info {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .song-detial-list .song-info:hover {
+                background: none repeat scroll 0 0 #4192D9;
+            }
+            
+            .song-detial-list .song-info div {
+                float: left;
+            }
+            
+            .song-detial-list .song-info .play-btn {
+                margin-top: 1px;
+                border-radius: 50% 50%;
+                width: 20px;
+                height: 20px;
+                border: 1px solid #a6f075;
+                margin-top: 3px;
+                margin-left: 3px;
+                background: url("images/music/play_sml3.png") no-repeat scroll 4px 3px transparent;
+            }
+            
+            .song-detial-list .song-info .play-btn:hover {
+                cursor: pointer;
+                border: 1px solid #ffffff;
+            }
+            
+            .song-detial-list .song-info .song {
+                overflow: hidden;
+                margin-left: 6px;
+                width: 240px;
+            }
+            
+            .song-detial-list .song-info .singer {
+                overflow: hidden;
+                width: 88px;
+                text-align: center;
+                height: 28px;
+            }
+            
+            .song-detial-list .playing {
+                background: none repeat scroll 0 0 #4192D9;
+            }
+        </style>
+        <!--<script type="text/javascript" src="script/jquery.min.js"></script>--><script type="text/javascript" src="script/define.js"></script>
+        <script type="text/javascript" src="script/load_image.js"></script>
+        <script type="text/javascript" src="script/image_swap.js"></script>
+	<script type="text/javascript" src="script/music_popup.js"></script>
+        <script type="text/javascript" src="script/music_player.js"></script>
+        <script type="text/javascript" src="script/sort_rect.js"></script>
+        <script type="text/javascript" src="script/music_main.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var dom = wky.dom;
+            var evt = wky.event;
+            var tween = wky.tween;
+            var core = wky.core;
+            
+            
+            var plui = new wky.plugins.PlayListUI({
+                playerListOption: {
+                    playList: [{
+                        mp3: "music/Call_Me_Maybe.mp3",
+                        lrc: {
+                            "offset": "-800",
+                            "1000": "Call Me Maybe",
+                            "2760": "Carly Rae Jepsen",
+                            "3760": "",
+                            "4760": "I threw a wish in the well",
+                            "6550": "Don’t ask me I’ll never tell",
+                            "8590": "I looked to you as it fell",
+                            "10550": "and now you’re in my way",
+                            "12630": "I’d trade my soul for a wish",
+                            "14580": "Pennies and dimes – for a kiss",
+                            "16590": "I wasn’t looking for this",
+                            "18640": "But now you’re in my way",
+                            "20630": "Your stare was holding",
+                            "22400": "Ripped jeans – skin was showing",
+                            "24280": "Hot night – Wind was blowing",
+                            "26300": "Where d’ you think you’re going baby?",
+                            "28710": "Hey I just met you",
+                            "31240": "and this is crazy",
+                            "32920": "But here’s my number",
+                            "35160": "So, Call Me Maybe",
+                            "37020": "It’s hard to look right",
+                            "39280": "at you baby!",
+                            "41200": "But here’s my number",
+                            "43070": "So, Call Me Maybe",
+                            "44980": "Hey I just met you",
+                            "47040": "and this is crazy",
+                            "48870": "But here’s my number",
+                            "51070": "So, Call Me Maybe",
+                            "52880": "and all the other boys",
+                            "55240": "try to chase me",
+                            "57180": "But here’s my number",
+                            "59120": "So, Call Me Maybe",
+                            "60570": "",
+                            "64740": "You took your time with the call",
+                            "66560": "I took no time with the fall",
+                            "68600": "You gave me nothing at all",
+                            "70510": "But still you’re in my way",
+                            "72500": "I beg and borrow and steal",
+                            "74700": "Have foresight,and it's real",
+                            "76690": "I didn't know I would feel it",
+                            "78840": "But it’s in my way",
+                            "80660": "Your stare was holding",
+                            "82340": "Ripped jeans – skin was showing",
+                            "84290": "Hot night – Wind was blowing",
+                            "86310": "Where d’ you think you’re going baby?",
+                            "88540": "Hey I just met you",
+                            "91240": "and this is crazy",
+                            "93020": "But here’s my number",
+                            "94950": "So, Call Me Maybe",
+                            "97060": "It’s hard to look right",
+                            "98960": "at you baby!",
+                            "101200": "But here’s my number",
+                            "103140": "So, Call Me Maybe",
+                            "104910": "Hey I just met you",
+                            "107100": "and this is crazy",
+                            "108910": "But here’s my number",
+                            "111030": "So, Call Me Maybe",
+                            "112820": "and all the other boys",
+                            "115050": "try to chase me",
+                            "117200": "But here’s my number",
+                            "119050": "So, Call Me Maybe",
+                            "121140": "Boy you came into my life",
+                            "122900": "I’ve missed you so bad",
+                            "124360": "I’ve missed you so bad",
+                            "126420": "I’ve missed you so so bad",
+                            "128740": "Boy you came into my life",
+                            "131060": "I’ve missed you so bad",
+                            "132650": "and You should know that",
+                            "134640": "I’ve missed you so so bad",
+                            "137010": "",
+                            "144640": "It’s hard to look right",
+                            "147490": "at you baby",
+                            "149350": "But here’s my number",
+                            "151220": "So, Call Me Maybe",
+                            "152970": "Hey I just met you",
+                            "154990": "and this is crazy",
+                            "157230": "But here’s my number",
+                            "159100": "So, Call Me Maybe",
+                            "161080": "and all the other boys",
+                            "163400": "try to chase me",
+                            "165320": "But here’s my number",
+                            "166960": "So, Call Me Maybe",
+                            "169020": "Boy you came into my life",
+                            "170960": "I’ve missed you so bad",
+                            "172900": "I’ve missed you so bad",
+                            "174770": "I’ve missed you so so bad",
+                            "176780": "Boy you came into my life",
+                            "178910": "I’ve missed you so bad",
+                            "180890": "You should know that",
+                            "182790": "So, Call Me Maybe"
+                        },
+                        lrcUrl: "",
+                        songName: "call me may be",
+                        songer: "Carly Rae Jepsen",
+                        songCorver: "images/music_corver/carlyraejepsen.jpg"
+                    }, {
+                        mp3: "http://zhifeiji.aliapp.com/music/yin-tian.mp3?2wwe3",
+                        lrc: {
+                            "2000": "歌曲名称：阴天",
+                            "4760": "歌手名称：莫文蔚",
+                            "6220": "词曲：作词：李宗盛",
+                            "6760": "作曲：李宗盛/周国仪",
+                            "8920": "编曲：周国仪",
+                            "10020": "制作：刘建平",
+                            "14520": "QQ：33975183",
+                            "19380": "阴天　在不开灯的房间",
+                            "22400": "当所有思绪都一点一点沉淀",
+                            "26160": "爱情究竟是精神鸦片",
+                            "29180": "还是世纪末的无聊消遣",
+                            "33490": "香烟　氲成一滩光圈",
+                            "36800": "和他的照片就摆在手边",
+                            "40290": "傻傻两个人　笑的多甜",
+                            "43810": "",
+                            "46680": "开始总是分分钟都妙不可言",
+                            "51040": "谁都以为热情它永不会减",
+                            "54260": "除了激情褪去后的那一点点倦",
+                            "60980": "也许像谁说过的贪得无厌",
+                            "64990": "活该应了谁说过的不知检点",
+                            "68630": "总之那几年　感性赢了理性的那一面",
+                            "72510": "",
+                            "91520": "阴天　在不开灯的房间",
+                            "94110": "当所有思绪都一点一点沉淀",
+                            "97660": "爱恨情欲里的疑点",
+                            "100360": "盲点　呼之欲出　那么明显",
+                            "105190": "女孩　通通让到一边",
+                            "108300": "这歌里的细微末节就算都体验",
+                            "112120": "若想真明白　真要好几年",
+                            "116150": "",
+                            "147670": "回想那一天　喧闹的喜宴",
+                            "154930": "耳边响起的究竟是序曲或完结篇",
+                            "162080": "感情不就是你情我愿",
+                            "165200": "最好爱恨扯平两不相欠",
+                            "168900": "感情说穿了　一人挣脱的　一人去捡",
+                            "175480": "男人大可不必百口莫辩",
+                            "179530": "女人实在无须楚楚可怜",
+                            "183110": "总之那几年　你们两个没有缘",
+                            "192990": "阴天　在不开灯的房间",
+                            "196100": "当所有思绪都一点一点沉淀",
+                            "199630": "爱情究竟是精神鸦片",
+                            "202820": "还是世纪末的无聊消遣",
+                            "207220": "香烟　氲成一滩光圈",
+                            "210440": "和他的照片就摆在手边",
+                            "213990": "傻傻两个人　笑的多甜",
+                            "221230": "傻傻两个人　笑的多甜"
+                        },
+                        lrcUrl: "",
+                        songName: "阴天  ",
+                        songer: "莫文蔚",
+                        songCorver: "images/music_corver/mowenwei.jpg"
+                    }, {
+                        mp3: "music/ud.mp3",
+                        lrc: {
+                            "ti": "Upside Down",
+                            "ar": "ATeen",
+                            "al": "Teen Spirit",
+                            "by": "jesse",
+                            "offset": "500",
+                            "14310": "My grades are down from A's to D's ",
+                            "17680": "I'm way behind in history ",
+                            "21270": "I lost myself in fantasies ",
+                            "25590": "Of you and me together ",
+                            "29410": " ",
+                            "30310": "I don't know why - I - I but dreaming's all I do ",
+                            "36680": "I won't get by-I-I on mere imagination ",
+                            "38040": " ",
+                            "45110": "Upside down ",
+                            "46890": "Bouncing off the ceiling ",
+                            "49010": "Inside out ",
+                            "50560": "Stranger to this feeling ",
+                            "52990": "Got no clue what I should do ",
+                            "57230": "But I'll go crazy if I can't get next to you ",
+                            "61930": " ",
+                            "68700": "My teacher says to concentrate ",
+                            "72580": "So what- his name was Peter the Great ",
+                            "76350": "The kings and queens will have to wait ",
+                            "80340": "Cuz I don't have forever ",
+                            "83560": " ",
+                            "84550": "I wish that I - I - I could walk right up to you ",
+                            "92550": "Each time I try- I-I the same old hesitation ",
+                            "99780": " ",
+                            "100110": "Upside down ",
+                            "101890": "Bouncing off the ceiling ",
+                            "103830": "Inside out ",
+                            "105600": "Stranger to this feeling ",
+                            "107760": "Got no clue what I should do ",
+                            "111880": "But I'll go crazy if I can't get next to you ",
+                            "116930": " ",
+                            "119400": "Somehow someday ",
+                            "126730": "You will love me too ",
+                            "131230": "One day will be the day when all my dreams come true ",
+                            "140180": " ",
+                            "141450": " ",
+                            "142680": " ",
+                            "144970": " ",
+                            "148280": " ",
+                            "149090": "Upside down ",
+                            "150910": "Bouncing off the ceiling ",
+                            "152760": "Inside out ",
+                            "154530": "Stranger to this feeling ",
+                            "156730": "Got no clue what I should do ",
+                            "160700": "But I'll go crazy if I can't get next to you ",
+                            "164690": " ",
+                            "165370": " ",
+                            "165650": " ",
+                            "166120": "Upside down ",
+                            "166970": "Bouncing off the ceiling ",
+                            "168490": "Inside out ",
+                            "170290": "Stranger to this feeling ",
+                            "172390": "Got no clue what I should do ",
+                            "174240": "But I'll go crazy if I can't get next to you ",
+                            "176980": " ",
+                            "177500": " ",
+                            "179760": " "
+                        },
+                        lrcUrl: "",
+                        songName: "upside down",
+                        songer: "A-Teens",
+                        songCorver: "images/music_corver/ateens.jpg"
+                    }, {
+                        mp3: "music/We_Are_Never_Ever_Getting_Back_Together.mp3",
+                        songName: "We Are Never Ever Getting Back Together",
+                        songer: "Taylor Swift",
+                        songCorver: "images/music_corver/tas.jpg",
+                        lrc: {
+                            "ti": "We Are Never Ever Getting Back Together",
+                            "ar": "Taylor Swift",
+                            "al": "",
+                            "by": "我想我是海",
+                            "offset": "-500",
+                            "0": "We Are Never Ever Getting Back Together",
+                            "500": "",
+                            "880": "演唱:Taylor Swift",
+                            "1260": "歌词编辑：我想我是海",
+                            "1780": "QQ：2629448988",
+                            "3390": "",
+                            "6190": "",
+                            "6680": "I remember when we broke up the first time",
+                            "9310": "Seeing this is, and had enough, it\\’s like",
+                            "12190": "We haven\\’t seen each other in a month",
+                            "14020": "When you, said you, needed space, what?",
+                            "17000": "When you come around again and say",
+                            "19640": "Baby, I miss you and I swear I\\’m gonna change",
+                            "22560": "Trust me, remember how that lasted for a day",
+                            "25220": "I say, I hate you, we break up, you call me, I love you",
+                            "28910": "",
+                            "31540": "Oooh we called it off again last night",
+                            "37020": "But Oooh, this time I\\’m telling you, I\\’m telling you",
+                            "40110": "We are never ever ever ever getting back together",
+                            "45580": "We are never ever ever ever getting back together",
+                            "51220": "You go talk to your friends talk",
+                            "53700": "And my friends talk to me",
+                            "56410": "But we are never ever ever ever getting back together",
+                            "66380": "",
+                            "65280": "Like ever...",
+                            "66210": "",
+                            "67580": "I\\’m really gonna miss you picking fights",
+                            "70450": "And me, falling for a screaming that I\\’m right",
+                            "72720": "And you, will hide away and find your piece of mine with some indie record that\\’s much cooler than mine",
+                            "77800": "",
+                            "78900": "Oooh you called me up again tonight",
+                            "84340": "But Oooh, this time I\\’m telling you, I\\’m telling you",
+                            "89990": "We are never ever ever ever getting back together",
+                            "95550": "We are never ever ever ever getting back together",
+                            "101220": "You go talk to your friends talk",
+                            "103890": "And my friends talk to me",
+                            "106440": "But we are never ever ever ever getting back together",
+                            "65540": "",
+                            "123760": "I used to think, that we, were forever ever ever",
+                            "129140": "And I used to say never say never",
+                            "135910": "Huh, he calls me up and he\\’s like, I still love you",
+                            "137660": "And i\\’m like, I mean, I mean this is exhausting, you know",
+                            "141730": "We are never getting back together, like ever",
+                            "145210": "",
+                            "145490": "We are never ever ever ever getting back together",
+                            "151540": "We are never ever ever ever getting back together",
+                            "157410": "You go talk to your friends talk",
+                            "159690": "And my friends talk to me",
+                            "161330": "But we are never ever ever ever getting back together",
+                            "166580": "",
+                            "167350": "Not getting back together, we",
+                            "175130": "Oh, getting back together",
+                            "179250": "",
+                            "179740": "You go talk to your friends talk",
+                            "182040": "And my friends talk to me",
+                            "184490": "But we are never ever ever ever getting back together"
+                        }
+                    }]
+                }
+            });
+            plui;
+			
+			
+			var MusicPopup = wky.plugins.MusicPopup;
+			var ws = dom.screenSize();
+			
+			var popup = new MusicPopup({
+				width:ws.width,
+				height:ws.height,
+				duration:600,
+				backContent:'正在跳转 到天猫',
+				completeCall:function(){
+					//dom.html(this.realImgContainer,'<iframe src="http://www.huaban.com" style="width:100%; height:100%;"></iframe>');
+					
+				},
+			});
+			evt.add(document,"click",function(){
+				if (popup.isShowed) {
+					popup.hide();
+				}else{
+					popup.show();
+				}
+			})
+			
+			
+        </script>
+    </body>
+</html>

@@ -1,0 +1,687 @@
+﻿<!DOCTYPE html>
+<html dir="ltr">
+    <head>
+		<meta charset="uft-8">
+		<title> 注册  </title>
+		<link href="/css/reset.css" type="text/css" rel="stylesheet"></link>
+		<style type="text/css">
+			.singup-container{
+				width:100%;
+				height:268px;
+				font-family:   'Lucida Grande', Helvetica, Arial, Verdana, sans-serif;
+			}
+			.singup-container .singup-forms{
+				height:268px;
+				width:450px;
+				margin:0 auto;
+			}
+			.singup-container .singup-title{
+				text-align:center;
+			}
+			.singup-container .singup-list{
+				width:100%;
+				margin-top:4px;
+			}
+			.singup-container .singup-list li {
+				text-align:left;
+				width:100%;
+				height:40px;
+				
+			}
+			.singup-container .singup-list .input-con{
+				width:450px;
+				height:40px;
+				text-align:center;
+			}
+			.singup-container .input-con .input-mark{
+				float: left; 
+				position: absolute; 
+				height: 40px;
+				width: 150px;
+				margin-left:2px;
+			}
+			.singup-container .input-con .error-tip{
+				background: none repeat scroll 0 0 #62B3FF;
+				height: 100%;
+				position: absolute;
+				right: 0;
+				top: 0;
+				z-index: 2;
+				width:100%;
+				color:#FFFFFF;
+				font-size:12px;
+				text-align:center;
+				right:-114px;
+				line-height:33px;
+			}
+			.singup-container .input-con .error-tip span{
+				font-size:12px;
+			}
+			.singup-container .input-con .input-mark > div > div{
+				width: 38px; 
+				margin-top: 3px; 
+				margin-left: 1px; 
+				height: 35px;
+				position:absolute;
+				right:0;
+				width:100%;
+			}
+			.singup-container .singup-list li input[type=text],input[type=password]{
+				width:298px;
+				height:35px;
+				float:right;
+				font-weight: 200;
+				font-size:18px;
+				margin-top:1.5px;
+				border:1px solid #CCCCCC;
+				padding-left:150px;
+				color:#333333;
+				line-height:35px;
+				
+				-webkit-box-shadow: inset 0 1px 0 #e5e5e5;
+				-moz-box-shadow: inset 0 1px 0 #e5e5e5;
+				-ms-box-shadow: inset 0 1px 0 #e5e5e5;
+				-o-box-shadow: inset 0 1px 0 #e5e5e5;
+				box-shadow: inset 0 1px 0 #e5e5e5;
+			}
+			.singup-container .singup-list .filed-name{
+				width:113px;
+				height:35px;
+				float:left;
+				text-align:right;
+				position:relative;
+				overflow:hidden;
+			}
+			
+			.singup-container .singup-list li .filed-name > span{
+				line-height:40px;
+				height:30px;
+				text-align:center;
+				font-size:14px;
+				margin-right:14px;
+			}
+			.singup-container .singup-list li .submit-form{
+				width:75px;
+				cursor:pointer;
+				height:30px;
+				margin-top:10px;
+				margin-left:40px;
+				float:left;
+				background:none repeat scroll 0 0 #2686EC;
+				color:#E0E0E0;
+				border:none;
+			}
+			.singup-container .singup-list li .submit-con{
+				width:100%;
+				height:100%;
+				text-align:center;
+			}
+			.input-icon-url{
+				background: url("images/music/singup_tb.png") no-repeat scroll 999px 999px transparent;
+				height: 35px;
+				width: 35px;
+			}
+			.tips{
+				float:right;
+				margin-right:2px;
+			}
+			/* icon 表示 搞的淘宝的 */
+			.yes{
+				background-position: 0 -76px;
+			}
+			.error{
+				background-position:0 -30px;
+			}
+			.what{
+				background-position: 0 -224px;
+			}
+			.info{
+				background-position:0 -175px
+			}
+			.warn{
+				background-position:0 -125px
+			}
+			.loading{
+				background: url("images/music/loading.gif") no-repeat scroll 0 0 transparent;
+			}
+		</style>
+		<script type="text/javascript" src="/script/define.js"></script>
+		<script type="text/javascript" src="/script/crypto.js"></script>
+		<script type="text/javascript" src="/script/ajax.js"></script>
+		<script type="text/javascript">
+			var __GLOBAL__ = {
+				publicKey:'<%=cryptoData.modulus  %>',
+				exponent:'<%=cryptoData.exponent  %>'
+			};
+		</script>
+	</head>
+	<body>
+		<div class="singup-container">
+			<div class="singup-forms">
+				<h1 class="singup-title"> 用户注册 </h1>
+				<ul class="singup-list">
+					<li>
+						<div class="input-con">
+							<div class="input-mark">
+								<div style="position:relative;">
+									<div style="postiont:absolute;">
+										<div class="filed-name"><span>用户名:</span><div class="error-tip"></div></div>
+										<div class="tips input-icon-url info"></div>
+									</div>
+								</div>
+							</div>
+							<input type="text" class="user-name">
+						</div>
+					</li>
+					<li>
+						<div class="input-con">
+							<div class="input-mark">
+								<div style="position:relative;">
+									<div style="postiont:absolute;">
+										<div class="filed-name"><span>密码:</span><div class="error-tip"></div></div>
+										<div class="tips input-icon-url info"></div>
+									</div>
+								</div>
+							</div>
+							<input class="password" type="password" />
+						</div>
+					</li>
+					<li>
+						<div class="input-con">
+							<div class="input-mark">
+								<div style="position:relative;">
+									<div style="postiont:absolute;">
+										<div class="filed-name"><span>重复密码:</span><div class="error-tip"></div></div>
+										<div class="tips input-icon-url info"></div>
+									</div>
+								</div>
+							</div>
+							<input class="password-repeat" type="password" >
+						</div>
+					</li>
+					<li>
+						<div class="input-con">
+							<div class="input-mark">
+								<div style="position:relative;">
+									<div style="postiont:absolute;">
+										<div class="filed-name"><span>email:</span><div class="error-tip"></div></div>
+										<div class="tips input-icon-url info"></div>
+									</div>
+								</div>
+							</div>
+							<input class="email" type="text" />
+						</div>					
+					</li>
+					<li>
+						<div class="input-con">
+							<div class="input-mark">
+								<div style="position:relative;">
+									<div style="postiont:absolute;">
+										<div class="filed-name"><span>手机:</span><div class="error-tip"></div></div>
+										<div class="tips input-icon-url info"></div>
+									</div>
+								</div>
+							</div>
+							<input class="phone" type="text" />
+						</div>
+					</li>
+					<li><div class="submit-con"><input class="submit-form" type="button" value="注册" /></div></li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var dom = wky.dom;
+			var core = wky.core;
+			var event = wky.event;
+			var RSAKey = wky.crypto.RSAKey;
+			var ajax = wky.ajax;
+			var tween = wky.tween;
+			
+			var encrypted = function(msg){
+				if(!msg){
+					return;
+				}
+				var rsaKey = new RSAKey();
+				rsaKey.setPublic(__GLOBAL__.publicKey, __GLOBAL__.exponent);
+				var res = rsaKey.encrypt(msg);
+				return res;
+			}
+			
+			//检测email
+			var checkEmail = function(email){
+				if(!email){
+					return false;
+				}
+				var reg = /^(\w+\.)*(\w+)@(\w+\.)+(\w+)$/i;
+				if(reg.test(email)){
+					return true;
+				};
+				return false;
+			}
+			
+			//检测密码是否符合要求
+			var checkPassword = function(pwd){
+				var reg = /^(\d|\w|-|_){6,22}$/;
+				if(reg.test(pwd)){
+					return true;
+				};
+				return false;
+			}
+
+			//检测密码安全性
+			var checkPasswordClass = function(password){
+				//纯数字，纯字符（大写），纯字符（小写），下划线，短横线（只包含一项是安全等级1（低），包含两项是2（中等），其他是安全等级高）
+				var res = {};
+				var hardVal = 0;
+				res.secureClass = hardVal;
+				if(!checkPassword(password)){
+					return res;
+				}
+				//console.log(res);
+				var regs = {
+					num:/\d/,
+					big:/[A-Z]/,
+					small:/[a-z]/,
+					bl:/_/,
+					ml:/-/
+				};
+				core.forIn(regs,function(k,v){
+					if(v.test(password)){
+						hardVal++;
+						if(k in res){
+							res[k] = parseInt(res[k]) + 1;
+						}else{
+							res[k] = 0;
+						}
+					}
+				});
+				res.secureClass = hardVal;
+				return res;
+			}
+			
+			//检测名字是否合法
+			var checkName = function(name){
+				if(!name){
+					return false;
+				}
+				var reg = /^(\d|\w|-|_|[\u4E00-\u9FA5]){6,20}$/i;
+				if(reg.test(name)){
+					return true;
+				};
+				return false;
+			}
+			
+			//检测手机是否符合要求
+			var checkPhone = function(phone){
+				if(!phone){
+					return false;
+				}
+				var reg = /^1(\d){10,10}$/i;
+				if(reg.test(phone)){
+					return true;
+				};
+				return false;
+			}
+			
+			//更新图标样式
+			var updateIconClass = function(ele,original,newer){
+				if(!ele && !original && !newer){
+					return;
+				}
+				dom.removeClass(ele,original);
+				dom.addClass(ele,newer);
+				return;
+			}
+			
+			//显示错误提示
+			var showErrorTip = function(ele,content,processKey,complete){
+				if(!ele || !content || !processKey){
+					return;
+				}
+				if(userSignupList[processKey] && userSignupList[processKey].isTipShow){
+					dom.html(ele,content);
+					return;
+				}
+				dom.html(ele,content);
+				complete = complete || function(){};
+				var width = parseInt(dom.getStyle(ele,"width"));
+				width = isNaN(width) ? 113 : width;
+				tween.animate({
+					duration: 600,
+					easing: "easeOutCirc",
+					start: -width,
+					change: width,
+					step: function(delta, clVal){
+						dom.setStyle(ele, "right", clVal+"px");
+					},
+					complete: function(){
+						userSignupList[processKey] && (userSignupList[processKey].isTipShow = true);
+						if (core.isFunction(complete)) {
+							complete.apply(this, arguments);
+						}
+					}
+				})
+			}
+			//隐藏错误信息
+			var hideErrorTip = function(ele,processKey,complete){
+				if(!ele || !processKey || !userSignupList[processKey] || !userSignupList[processKey].isTipShow){
+					return;
+				}
+				complete = complete || function(){};
+				var width = parseInt(dom.getStyle(ele,"width"));
+				width = isNaN(width) ? 113 : width;
+				tween.animate({
+					duration: 600,
+					easing: "easeInCubic",
+					start: 0,
+					change: -width,
+					step: function(delta, clVal){
+						dom.setStyle(ele, "right", clVal+"px");
+					},
+					complete: function(){
+						userSignupList[processKey] && (userSignupList[processKey].isTipShow = false);
+						if (core.isFunction(complete)) {
+							complete.apply(this, arguments);
+						}
+					}
+				})
+			}
+			
+			//检测是否通过测试
+			var checkInfoPassed = function(){
+				var res = {};
+				res.isPassed = true;
+				core.forIn(userSignupList,function(k,v){
+					if(v){
+						if(!v.isPassed){
+							res.error = v;
+							res.isPassed = false;
+							return false;
+						} 
+					}
+				});
+				
+				return res;
+			}
+			
+			//用户提示List
+			var userSignupList = {
+				userName:{
+					error:"用户名不合法哦",
+					empty:"用户名不能为空哦",
+					currentClass:"info",
+					isTipShow:false,
+					isPassed:false,
+					errorTip:"",
+					ele:"",
+					icon:""
+				},
+				password:{
+					error:"密码不合要求！",
+					empty:"密码不能为空哦！",
+					classify:[],
+					currentClass:"info",
+					isTipShow:false,
+					isPassed:false,
+					errorTip:"",
+					ele:"",
+					icon:""
+				},
+				repeatPassword:{
+					error:"密码填写不一致！",
+					empty:"重复密码不能为空哦！",
+					currentClass:"info",
+					isTipShow:false,
+					isPassed:false,
+					errorTip:"",
+					ele:"",
+					icon:""
+				},
+				email:{
+					error:"email格式不正确！",
+					empty:"email 不能为空哦！",
+					currentClass:"info",
+					isTipShow:false,
+					isPassed:false,
+					errorTip:"",
+					ele:"",
+					icon:""
+				},
+				phone:{
+					error:"手机格式不正确哦！",
+					currentClass:"info",
+					isTipShow:false,
+					isPassed:true,
+					errorTip:"",
+					ele:"",
+					icon:""
+				}
+			}
+			
+			
+			var apis = {
+				isUserNameSignup:"/api/is_user_name_signup",
+				isEmailSignup:"api/is_email_signup",
+				submit:"/api/singup_api"
+			}
+			
+			//todo:加上容器
+			var formContainer =  dom.search("div.singup-forms");
+			
+			userSignupList.userName.ele = dom.search('input.user-name',formContainer)[0];
+			userSignupList.password.ele = dom.search('input.password',formContainer)[0];
+			userSignupList.repeatPassword.ele = dom.search('input.password-repeat',formContainer)[0];
+			userSignupList.email.ele = dom.search('input.email',formContainer)[0];
+			userSignupList.phone.ele = dom.search('input.phone',formContainer)[0];
+			var submitEle = dom.search("input.submit-form",formContainer)[0];
+			
+			//icons
+			userSignupList.userName.icon = dom.search("div.input-icon-url",userSignupList.userName.ele.parentElement)[0];
+			userSignupList.password.icon = dom.search("div.input-icon-url",userSignupList.password.ele.parentElement)[0];
+			userSignupList.repeatPassword.icon = dom.search("div.input-icon-url",userSignupList.repeatPassword.ele.parentElement)[0];
+			userSignupList.email.icon = dom.search("div.input-icon-url",userSignupList.email.ele.parentElement)[0]; 
+			userSignupList.phone.icon = dom.search("div.input-icon-url",userSignupList.phone.ele.parentElement)[0];
+			
+			//error tip
+			userSignupList.userName.errorTip = dom.search("div.error-tip",userSignupList.userName.ele.parentElement)[0];
+			userSignupList.password.errorTip = dom.search("div.error-tip",userSignupList.password.ele.parentElement)[0];
+			userSignupList.repeatPassword.errorTip = dom.search("div.error-tip",userSignupList.repeatPassword.ele.parentElement)[0];
+			userSignupList.email.errorTip = dom.search("div.error-tip",userSignupList.email.ele.parentElement)[0];
+			userSignupList.phone.errorTip = dom.search("div.error-tip",userSignupList.phone.ele.parentElement)[0];
+			
+			event.add(userSignupList.userName.ele,"blur",function(){
+				var userName = userSignupList.userName.ele.value;
+				if(!userSignupList.userName.icon){
+					alert("error");
+					return;
+				}
+				if(!userName){
+					//用户名不能为空
+					updateIconClass(userSignupList.userName.icon,userSignupList.userName.currentClass,"error");
+					userSignupList.userName.currentClass = "error";
+					showErrorTip(userSignupList.userName.errorTip,userSignupList.userName.empty,"userName");
+				}else{
+					//验证用户名是否合法
+					if(checkName(userName)){
+						updateIconClass(userSignupList.userName.icon,userSignupList.userName.currentClass,"loading");
+						userSignupList.userName.currentClass = "loading";
+						//验证是否注册过了
+						ajax.get(apis.isUserNameSignup,{
+							user_name:userName
+						},function(data){
+							var actData = data.JSON;
+							if(actData && actData.status == 1){
+								updateIconClass(userSignupList.userName.icon,userSignupList.userName.currentClass,"yes");
+								userSignupList.userName.currentClass = "yes";
+								userSignupList.userName.isPassed = true;
+								hideErrorTip(userSignupList.userName.errorTip,"userName");
+							}else{
+								updateIconClass(userSignupList.userName.icon,userSignupList.userName.currentClass,"error");
+								userSignupList.userName.currentClass = "error";
+								showErrorTip(userSignupList.userName.errorTip,actData.msg,"userName");
+							}
+						});
+					}else{
+						//用户名不合规则
+						updateIconClass(userSignupList.userName.icon,userSignupList.userName.currentClass,"error");
+						userSignupList.userName.currentClass = "error";
+						showErrorTip(userSignupList.userName.errorTip,userSignupList.userName.error,"userName");
+						return;
+					}
+				}
+			});
+			event.add(userSignupList.userName.ele,"focus",function(){
+				userSignupList.userName.isPassed = false;
+			});
+			
+			// 密码事件
+			event.add(userSignupList.password.ele,"blur",function(){
+				var password = userSignupList.password.ele.value;
+				var hclass = {};
+				if(!password){
+					updateIconClass(userSignupList.password.icon,userSignupList.password.currentClass,"error");
+					userSignupList.password.currentClass = "error";
+					showErrorTip(userSignupList.password.errorTip,userSignupList.password.empty,"password");
+				}else{
+					hclass = checkPasswordClass(password);
+					if(hclass.secureClass  && hclass.secureClass  > 0){
+						userSignupList.password.isPassed = true;
+						updateIconClass(userSignupList.password.icon,userSignupList.password.currentClass,"yes");
+						userSignupList.password.currentClass = "yes";
+						
+						hideErrorTip(userSignupList.password.errorTip,"password");
+						return;
+					}else{
+						updateIconClass(userSignupList.password.icon,userSignupList.password.currentClass,"error");
+						userSignupList.password.currentClass = "error";
+					}
+					showErrorTip(userSignupList.password.errorTip,userSignupList.password.error,"password");
+				}
+			});
+			event.add(userSignupList.password.ele,"focus",function(){
+				userSignupList.password.isPassed = false;
+			});
+			
+			// 重复密码事件
+			event.add(userSignupList.repeatPassword.ele,"blur",function(){
+				var password = userSignupList.repeatPassword.ele.value;
+				if(!password){
+					updateIconClass(userSignupList.repeatPassword.icon,userSignupList.repeatPassword.currentClass,"error");
+					userSignupList.repeatPassword.currentClass = "error";
+					showErrorTip(userSignupList.repeatPassword.errorTip,userSignupList.repeatPassword.empty,"repeatPassword");
+				}else{
+					if(password === userSignupList.password.ele.value){
+						updateIconClass(userSignupList.repeatPassword.icon,userSignupList.repeatPassword.currentClass,"yes");
+						userSignupList.repeatPassword.currentClass = "yes";
+						userSignupList.repeatPassword.isPassed = true;
+						hideErrorTip(userSignupList.repeatPassword.errorTip,"repeatPassword");
+						return;
+					}else{
+						updateIconClass(userSignupList.repeatPassword.icon,userSignupList.repeatPassword.currentClass,"error");
+						userSignupList.repeatPassword.currentClass = "error";
+					}
+					showErrorTip(userSignupList.repeatPassword.errorTip,userSignupList.repeatPassword.error,"repeatPassword");
+				}
+			});
+			event.add(userSignupList.repeatPassword.ele,"focus",function(){
+				userSignupList.repeatPassword.isPassed = false;
+			});
+			
+			//检测email
+			event.add(userSignupList.email.ele,"blur",function(){
+				var email = userSignupList.email.ele.value;
+				if(!email){
+					updateIconClass(userSignupList.email.icon,userSignupList.email.currentClass,"error");
+					userSignupList.email.currentClass = "error";
+					showErrorTip(userSignupList.email.errorTip,userSignupList.email.empty,"email");
+				}else{
+					if(checkEmail(email)){
+						updateIconClass(userSignupList.email.icon,userSignupList.email.currentClass,"loading");
+						userSignupList.email.currentClass = "loading";
+						ajax.get(apis.isEmailSignup,{
+							email:email
+						},function(data){
+							var actData = data.JSON;
+							if(actData && actData.status == 1){
+								updateIconClass(userSignupList.email.icon,userSignupList.email.currentClass,"yes");
+								userSignupList.email.currentClass = "yes";
+								userSignupList.email.isPassed = true;
+								hideErrorTip(userSignupList.email.errorTip,"email");
+							}else{
+								updateIconClass(userSignupList.email.icon,userSignupList.email.currentClass,"error");
+								userSignupList.email.currentClass = "error";
+								showErrorTip(userSignupList.email.errorTip,actData.msg,"email");
+							}
+						});
+						return;
+					}else{
+						updateIconClass(userSignupList.email.icon,userSignupList.email.currentClass,"error");
+						userSignupList.email.currentClass = "error";
+					}
+					showErrorTip(userSignupList.email.errorTip,userSignupList.email.error,"email");
+				}
+			});
+			event.add(userSignupList.email.ele,"focus",function(){
+				userSignupList.email.isPassed = false;
+			});
+			
+			//检测手机
+			event.add(userSignupList.phone.ele,"blur",function(){
+				var phone = userSignupList.phone.ele.value;
+				if(!phone){
+					updateIconClass(userSignupList.phone.icon,userSignupList.phone.currentClass,"info");
+					userSignupList.phone.currentClass = "info";
+					userSignupList.phone.isPassed = true;
+					hideErrorTip(userSignupList.phone.errorTip,"phone");
+					return;
+				}else{
+					if(checkPhone(phone)){
+						updateIconClass(userSignupList.phone.icon,userSignupList.phone.currentClass,"yes");
+						userSignupList.phone.currentClass = "yes";
+						userSignupList.phone.isPassed = true;
+						hideErrorTip(userSignupList.phone.errorTip,"phone");
+						return;
+					}else{
+						updateIconClass(userSignupList.phone.icon,userSignupList.phone.currentClass,"error");
+						userSignupList.phone.currentClass = "error";
+					}
+					showErrorTip(userSignupList.phone.errorTip,userSignupList.phone.error,"phone");
+				}
+			});
+			event.add(userSignupList.phone.ele,"focus",function(){
+				userSignupList.phone.isPassed = false;
+			});
+			
+			event.add(submitEle,"click",function(){
+				var crypedData = '';
+				var sendData = {
+					userName:userSignupList.userName.ele.value,
+					password:userSignupList.password.ele.value,
+					email:userSignupList.email.ele.value,
+					phone:userSignupList.phone.ele.value
+				}
+				crypedData = encrypted(JSON.stringify(sendData));
+				var res = checkInfoPassed();
+				if(!res.isPassed){
+					res.error.ele.focus();
+					return;
+				}
+				ajax.post(apis.submit,{
+						user_data:crypedData
+					},
+					function(data){
+						var actData = data.JSON;
+						if(!actData || !actData.status){
+							alert(actData.msg);
+							return;
+						}
+						location.href="/index.html";
+					});
+			});
+			
+			
+			
+			
+		</script>
+	</body>
+</html>
